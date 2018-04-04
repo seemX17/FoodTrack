@@ -26,7 +26,6 @@ class ViewController: UIViewController,UITextFieldDelegate, UIImagePickerControl
         textField.resignFirstResponder()
         return true
     }
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
     mealNameLabel.text = textField.text
     
