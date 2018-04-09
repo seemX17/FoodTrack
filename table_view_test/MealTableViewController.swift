@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import SDWebImage
 
 class MealTableViewController: UITableViewController {
     //MARK: Properties
@@ -38,6 +39,7 @@ class MealTableViewController: UITableViewController {
             //let header = firstObject.value(forKey: "header") as! String
             print(firstObject.value(forKey: "date") ?? "0")
             
+            // MARK: - Adding data to table view
             //Adding data to the table view
             self.responses = responseObject as! NSArray
             self.mealTableView.reloadData()
@@ -55,10 +57,6 @@ class MealTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
-
-  
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return responses.count
@@ -72,7 +70,9 @@ class MealTableViewController: UITableViewController {
         }
         
         let data = responses.object(at: indexPath.row) as! NSDictionary
-        cell.nameLabel.text = String(data.value(forKey: "articleId") as! Int)
+        cell.nameLabel.text = String(data.value(forKey: "articleId") as! Int) // string( data as! int) means putting value as int and converting it to string
+        let imageUrl = URL(string: data.value(forKey: "imageUrl") as! String) //converting string to url
+        cell.photoImageView.sd_setImage(with: imageUrl)
         
 //        let meal = meals[indexPath.row]
 //        // Configure the cell.
