@@ -56,6 +56,9 @@
                             <outlet property="delegate" destination="pL9-q3-eS6" id="AfT-Jw-Dae"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="mealTableView" destination="lc0-uM-6op" id="OzG-Rl-ShB"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YOD-bJ-wzT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -78,8 +81,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Meal Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WQM-Ds-iMZ">
-                                        <rect key="frame" x="106" y="49" width="131.5" height="30"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Meal Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WQM-Ds-iMZ">
+                                        <rect key="frame" x="106" y="47.5" width="131.5" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -87,15 +90,15 @@
                                             <outlet property="delegate" destination="Kef-ru-jXV" id="mHe-4B-Xnk"/>
                                         </connections>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Be1-wR-dAG">
-                                        <rect key="frame" x="96" y="107.5" width="151" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Be1-wR-dAG">
+                                        <rect key="frame" x="96" y="104.5" width="151" height="30"/>
                                         <state key="normal" title="Set Default Label Text"/>
                                         <connections>
                                             <action selector="setDefaultLabelText:" destination="Kef-ru-jXV" eventType="touchUpInside" id="iXo-gf-t7q"/>
                                         </connections>
                                     </button>
-                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="jim-ei-TxS">
-                                        <rect key="frame" x="0.0" y="166" width="343" height="343"/>
+                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="jim-ei-TxS">
+                                        <rect key="frame" x="0.0" y="161.5" width="343" height="343"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="jim-ei-TxS" secondAttribute="height" multiplier="1:1" id="fEj-LL-HEE"/>
@@ -105,8 +108,8 @@
                                             <outletCollection property="gestureRecognizers" destination="3Ej-jm-C6R" appends="YES" id="rlQ-ri-ozu"/>
                                         </connections>
                                     </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FMd-ta-CSO" customClass="RatingControl" customModule="table_view_test" customModuleProvider="target">
-                                        <rect key="frame" x="45.5" y="537.5" width="252" height="44"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FMd-ta-CSO" customClass="RatingControl" customModule="table_view_test" customModuleProvider="target">
+                                        <rect key="frame" x="45.5" y="531.5" width="252" height="50"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>

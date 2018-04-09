@@ -7,22 +7,49 @@
 //
 
 import UIKit
+import AFNetworking
 
 class MealTableViewController: UITableViewController {
     //MARK: Properties
     
-    var meals = [Meal]() //empty array of meal objects, this is a mutable which u can add items to it after you intialize it
-    
+    //var meals = [Meal]() //empty array of meal objects, this is a mutable which u can add items to it after you intialize it
+    var responses : NSArray = []
+
+    @IBOutlet var mealTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadSampleMeals()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+       // loadSampleMeals()
+        getAsync()
+        
     }
-
+    
+    
+    func getAsync()  {
+        let manager = AFHTTPSessionManager()
+        manager.requestSerializer = AFJSONRequestSerializer()
+        manager.responseSerializer = AFJSONResponseSerializer()
+        manager.responseSerializer.acceptableContentTypes = NSSet.init(object: "application/json") as? Set<String>
+        
+        manager.get("https://homee-api.azurewebsites.net/feed/17557580/estate/541180", parameters: nil, progress: nil, success: {(URLSessionDataTask,responseObject ) in
+            print(responseObject as! NSArray)
+            let result = responseObject as! NSArray
+            print(result.object(at: 0))
+            let firstObject = result.object(at: 1) as! NSDictionary
+            //let header = firstObject.value(forKey: "header") as! String
+            print(firstObject.value(forKey: "date") ?? "0")
+            
+            //Adding data to the table view
+            self.responses = responseObject as! NSArray
+            self.mealTableView.reloadData()
+            
+            
+        }, failure: {(URLSessionDataTask , error) in
+            print(error)
+        })
+        
+        
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -30,14 +57,11 @@ class MealTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return meals.count
-    }
+  
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return meals.count
+        return responses.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -47,11 +71,14 @@ class MealTableViewController: UITableViewController {
             fatalError("The dequed cell is not an instance of MealTableViewCell")
         }
         
-        let meal = meals[indexPath.row]
-        // Configure the cell.
-        cell.nameLabel.text = meal.name
-        cell.photoImageView.image = meal.photo
-        cell.ratingControl.rating = meal.rating
+        let data = responses.object(at: indexPath.row) as! NSDictionary
+        cell.nameLabel.text = String(data.value(forKey: "articleId") as! Int)
+        
+//        let meal = meals[indexPath.row]
+//        // Configure the cell.
+//        cell.nameLabel.text = meal.name
+//        cell.photoImageView.image = meal.photo
+//        cell.ratingControl.rating = meal.rating
         
         return cell
     }
@@ -75,7 +102,7 @@ class MealTableViewController: UITableViewController {
             fatalError("unable to initantiate meal")
         }
         
-        meals += [meal1,meal2,meal3]
+        //meals += [meal1,meal2,meal3]
     }
 
 }
