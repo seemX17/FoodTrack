@@ -13,6 +13,7 @@ import UIKit
     //IBDesignable is added as it shows red border for the view which means there is some error in the view
     //MARK: PROPERTIES
     private var ratingButtons = [UIButton]() //list of buttons
+    
     var  rating = 0{
         didSet{
             updateButtonSelectionStates()
@@ -23,6 +24,7 @@ import UIKit
             setupButtons()
         }
     } //insoectable lets you set properties to inspecter attribute
+    
     @IBInspectable var starCount : Int = 5{
         didSet{
             setupButtons()
@@ -71,9 +73,6 @@ import UIKit
             button.heightAnchor.constraint(equalToConstant: starsize.height).isActive = true
             button.widthAnchor.constraint(equalToConstant: starsize.width).isActive = true
             
-            //set the accessibility label
-            button.accessibilityLabel = "Set \(index + 1) star rating"
-            
             //set up button action
             button.addTarget(self, action: #selector(RatingControl.ratingButtonTapped(button:)), for: .touchUpInside)
             
@@ -83,19 +82,23 @@ import UIKit
             //adding new button to the stack
             ratingButtons.append(button)
             
+            //set the accessibility label
+            button.accessibilityLabel = "Set \(index + 1) star rating" //for voice over
+            
         }
         updateButtonSelectionStates()
     }
     
     //MARK: Add button action
     @objc func  ratingButtonTapped(button: UIButton) {
+      
+        //Getting the index of the selected item ie button from stack view
             guard let index = ratingButtons.index(of: button) else{
                 fatalError("The button, \(button), is not in the ratingbuttons array: \(ratingButtons)")
         }
         
         //calculate the rating of the selected button
         let selectedRating = index + 1
-        print(self.tag)
         if selectedRating == rating {
             //if the sekcted star represents the current rating, rest the rating to 0.
             rating = 0
@@ -103,9 +106,15 @@ import UIKit
             //otherwise set the rating to the selected star
             rating  = selectedRating
         }
+        
+        //MARK: NSNotification sender
+        print(self.tag) //Tag passed from mealTableview controller, Tag contains the index of the row selected
+        //Create object of rating, indexpath and the articleid fetched from the api, send the object to mealTableviewcontroller on click.
         NotificationCenter.default.post(name: NSNotification.Name("myNotification"), object: ["rating":rating, "indexpath": tag,"id":accessibilityHint])
+   
     }
     
+    //Accesibilty hint to tell the user to select rating voice over
     private func updateButtonSelectionStates()  {
         for(index, button) in ratingButtons.enumerated(){
             button.isSelected = index < rating
