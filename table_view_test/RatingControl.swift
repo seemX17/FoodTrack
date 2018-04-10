@@ -95,7 +95,7 @@ import UIKit
         
         //calculate the rating of the selected button
         let selectedRating = index + 1
-        
+        print(self.tag)
         if selectedRating == rating {
             //if the sekcted star represents the current rating, rest the rating to 0.
             rating = 0
@@ -103,6 +103,7 @@ import UIKit
             //otherwise set the rating to the selected star
             rating  = selectedRating
         }
+        NotificationCenter.default.post(name: NSNotification.Name("myNotification"), object: ["rating":rating, "indexpath": tag,"id":accessibilityHint])
     }
     
     private func updateButtonSelectionStates()  {
