@@ -22,6 +22,7 @@ class MealTableViewController: UITableViewController{
         super.viewDidLoad()
         // loadSampleMeals()
         getAsync()
+        mealTableView.allowsMultipleSelection = false
          //Initializing Notification received from rating controller to send index path and rating selected, index path of row is sent as tag to rating controller
         NotificationCenter.default.addObserver(self, selector: #selector(receive(_:)), name: "myNotification" as? NSNotification.Name, object: nil)
 }
@@ -48,6 +49,7 @@ class MealTableViewController: UITableViewController{
         }
     }
     
+    //MARK: GetAsync
     func getAsync()  {
         let manager = AFHTTPSessionManager()
         manager.requestSerializer = AFJSONRequestSerializer()
@@ -75,15 +77,17 @@ class MealTableViewController: UITableViewController{
         }, failure: {(URLSessionDataTask , error) in
             print(error)
         })
-        
-        
-        
     }
+    
+    //MARK: Table View delegates
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return responses.count
@@ -115,7 +119,42 @@ class MealTableViewController: UITableViewController{
         
         return cell
     }
-    //MARK:  Old cold
+    
+    //MARK: Swipe and delete rows
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            //Remove item from tempresponse data model
+//            tempResponse.removeObject(at: indexPath.row)
+//            self.mealTableView.reloadData()
+//        }
+//    }
+    
+//    //MARK: SWipe left/right TableCell
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let openAction = UIContextualAction(style: .normal, title:  "OPEN", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            print("OK, marked as open")
+            success(true)
+        })
+        openAction.backgroundColor = .green
+        return UISwipeActionsConfiguration(actions: [openAction])
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title:  "DELETE", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            self.tempResponse.removeObject(at: indexPath.row)
+           // self.mealTableView.deleteRows(at: [indexPath], with: .fade) //zthis doesn't work
+            self.mealTableView.reloadData()
+            success(true)
+        })
+        deleteAction.backgroundColor = .red
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    
+    //MARK:  Old code
     //
     //    private func loadSampleMeals(){
     //        let photo1 = UIImage(named: "meal1")
